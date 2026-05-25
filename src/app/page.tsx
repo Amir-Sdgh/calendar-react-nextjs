@@ -28,32 +28,31 @@ export default function CalendarPage() {
   };
 
   const updateEvent = (id: string, newTitle: string) => {
-    setEvents(events.map((event) =>
-      event.id === id ? { ...event, title: newTitle } : event
-    ));
+    setEvents(events.map(ev => ev.id === id ? { ...ev, title: newTitle } : ev));
   };
 
-  // WICHTIG: Diese Funktion muss existieren!
   const deleteEvent = (id: string) => {
-    setEvents(events.filter((event) => event.id !== id));
+    setEvents(events.filter(ev => ev.id !== id));
+  };
+
+  // (Drag & Drop)
+  const moveEvent = (eventId: string, newDate: Date) => {
+    setEvents(events.map(ev => 
+      ev.id === eventId ? { ...ev, date: newDate } : ev
+    ));
   };
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
       <div className="max-w-7xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden border border-gray-200">
-        <CalendarHeader 
-          currentDate={currentDate} 
-          onPrev={prevMonth} 
-          onNext={nextMonth} 
-          setView={setViewMode}
-        />
-        {/* WICHTIG: onDeleteEvent={deleteEvent} muss hier stehen! */}
+        <CalendarHeader currentDate={currentDate} onPrev={prevMonth} onNext={nextMonth} setView={setViewMode} />
         <MonthView 
           currentDate={currentDate} 
           events={events} 
           onAddEvent={addEvent} 
           onUpdateEvent={updateEvent}
-          onDeleteEvent={deleteEvent} 
+          onDeleteEvent={deleteEvent}
+          onMoveEvent={moveEvent} 
         />
       </div>
     </div>
